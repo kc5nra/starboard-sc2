@@ -13,6 +13,7 @@ namespace Starboard.View
     using System.Windows;
 
     using Starboard.ViewModel;
+    using System;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -22,9 +23,12 @@ namespace Starboard.View
         #region Constructors and Destructors
 
         /// <summary> Initializes a new instance of the <see cref = "MainWindowView" /> class. </summary>
-        public MainWindowView()
+        public MainWindowView(StarboardImageSource starboardImageSource)
         {
             this.InitializeComponent();
+
+            // ? Do not understand this paradigm!
+            ((MainWindowViewModel)this.DataContext).InitializeWithImageSource(starboardImageSource);
 
             this.Closing += this.MainWindowClosing;
         }

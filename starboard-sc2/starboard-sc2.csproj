@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D8769190-E0D7-4D32-A2CF-2E9683441D2D}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Starboard</RootNamespace>
     <AssemblyName>starboard-sc2</AssemblyName>
@@ -59,9 +59,7 @@
   <PropertyGroup>
     <ApplicationIcon>StarboardIcon.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <ManifestCertificateThumbprint>DF6C614B4D3D83BFBF235F2DF2D1A32ED215BF96</ManifestCertificateThumbprint>
   </PropertyGroup>
@@ -73,6 +71,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -88,11 +89,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
     <Compile Include="Converters\BooleanVisibilityConverter.cs" />
+    <Compile Include="OBS\DataTemplateManager.cs" />
+    <Compile Include="OBS\StarboardImageSource.cs" />
+    <Compile Include="OBS\StarboardSourceFactory.cs" />
+    <Compile Include="OBS\StarboardPlugin.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\PlayerColor.cs" />
@@ -145,14 +146,14 @@
     </Compile>
     <Compile Include="XSplit Plugin\BroadcasterPlugin.cs" />
     <Compile Include="XSplit Plugin\TimedBroadcasterPlugin.cs" />
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Converters\PlayerColorConverter.cs" />
     <Compile Include="Converters\RaceTypeConverter.cs" />
     <Compile Include="View\MainWindowView.xaml.cs">
@@ -227,17 +228,6 @@
     <Resource Include="Images\starboardname.png" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="VHMediaCOMLib">
-      <Guid>{7F9079F6-DCBA-40C4-AD11-47D6CB553F5F}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
@@ -259,9 +249,18 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CLRHostPlugin\CLRHostInterop\CLRHostInterop.vcxproj">
+      <Project>{18746141-1223-4fdf-bd6e-e7536ccade4f}</Project>
+      <Name>CLRHost.Interop %28Visual Studio 2010%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)XSplit Addon\*.*" "$(TargetDir)" /Y/Q</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetDir)$(TargetFileName)" "$(SolutionDir)..\OBS\rundir\plugins\CLRHostPlugin"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

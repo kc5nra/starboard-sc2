@@ -37,6 +37,8 @@ namespace Starboard.ViewModel
         /// <summary> The backing field for the toggle subbar command. </summary>
         private ICommand toggleSubbarCommand;
 
+        private StarboardImageSource imageSource;
+
         #endregion
 
         #region Constructors and Destructors
@@ -148,5 +150,17 @@ namespace Starboard.ViewModel
         }
 
         #endregion
+
+        public StarboardImageSource ImageSource
+        {
+            get
+            {
+                return imageSource;
+            }
+            set
+            {
+                imageSource = value;
+            }
+        }
     }
 }

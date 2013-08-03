@@ -162,6 +162,11 @@ namespace Starboard.ViewModel
 
         #region Public Methods
 
+        public void InitializeWithImageSource(StarboardImageSource imageSource)
+        {
+            scoreboardControlViewModel.ImageSource = imageSource;
+        }
+
         /// <summary> Closes the active network connection. </summary>
         public void CloseNetwork()
         {
